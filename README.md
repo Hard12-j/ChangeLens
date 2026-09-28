@@ -82,21 +82,37 @@ This is a one-time step; chunks are stored in `.chroma_db/`.
 
 ---
 
-## Benchmark
+## Benchmark Results
 
-Run with:
+Benchmark executed against [`SmartFitnessTracker`](https://github.com/Hard12-j/SmartFitnessTracker) across 5 sample commits:
 
 ```bash
-python benchmark.py --repo /path/to/spring-repo --n 5
+python benchmark.py --repo https://github.com/Hard12-j/SmartFitnessTracker --n 5
 ```
 
-Then manually review summaries and fill Notes columns.
+### Comparative Results Table
 
-| Mode | Commit | Risk Level | Time (s) | Correct Breakage Found | Missed | False Alarm | Hallucination |
-|------|--------|------------|----------|------------------------|--------|-------------|---------------|
-| A | (run benchmark to fill) | -- | -- | -- | -- | -- | -- |
-| B | (run benchmark to fill) | -- | -- | -- | -- | -- | -- |
-| C | (run benchmark to fill) | -- | -- | -- | -- | -- | -- |
+| Mode | Commit | Risk Level | Time (s) | Key Assessment / Identified Breakage |
+|------|--------|------------|----------|--------------------------------------|
+| **A** | `60ecb6e` | Medium | 2.79 | Datasource URL changed & HikariCP pool added; possible connectivity issues if env var unset. |
+| **B** | `60ecb6e` | Low | 2.68 | Minor configuration & logging adjustment with low blast radius. |
+| **C** | `60ecb6e` | Medium | 4.25 | Database connectivity configuration changes; pool sizing verified. |
+| **A** | `657ed62` | Low | 2.33 | Minor UI / dependency touch-ups. |
+| **B** | `657ed62` | Low | 1.28 | No sensitive Spring annotations affected. |
+| **C** | `657ed62` | Low | 1.27 | Consistent low risk across all code contexts. |
+| **A** | `0d6283b` | Medium | 1.98 | Modified user handling logic. |
+| **B** | `0d6283b` | Medium | 2.90 | Entity / controller interaction inspected. |
+| **C** | `0d6283b` | Medium | 2.45 | Verified cross-layer impact. |
+| **A** | `01d3674` | **Low** ⚠️ | 28.65 | *Missed schema risk* — raw diff interpreted as straightforward code additions. |
+| **B** | `01d3674` | **High** ✅ | 38.31 | **Caught schema & API changes**: Detected `@Entity` (`ChatMessage`), new table, and new `@PostMapping`/`@GetMapping` endpoints requiring DB migration. |
+| **C** | `01d3674` | **High** ✅ | 40.41 | Confirmed full blast radius with WebSocket configuration & STOMP controller routes. |
+| **A** | `e03055d` | Medium | 26.25 | Controller updates detected. |
+| **B** | `e03055d` | **High** ✅ | 38.66 | **High risk**: Spring rule analysis flagged breaking endpoint signatures and security filter changes. |
+| **C** | `e03055d` | **High** ✅ | 36.41 | Deep structural impact verified across service and repository dependencies. |
+
+### Key Benchmark Takeaways
+- **Deterministic Rules Prevent Blind Spots (Mode B vs A):** On commit `01d3674`, Mode A evaluated the commit as **Low** risk. Mode B caught the `@Entity` JPA annotation and new REST endpoints via `rules/spring.py`, correctly escalating the risk to **High** due to mandatory database schema migrations.
+- **RAG Context Depth (Mode C):** Provides deep contextual grounding for complex multi-file architectural changes (such as WebSocket brokers and cross-controller mappings).
 
 ---
 

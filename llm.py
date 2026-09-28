@@ -10,11 +10,17 @@ import os
 import re
 import time
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 from openai import OpenAI
 
 _client = None
 
-LLM_MODEL = os.getenv("LLM_MODEL", "gpt-4o-mini")
+LLM_MODEL = os.getenv("LLM_MODEL", "openai/gpt-oss-120b")
 MAX_DIFF_CHARS = 12_000
 
 
@@ -82,8 +88,9 @@ def analyse(diff_text, commit_info_text, mode="A",
     client = _get_client()
     prompt = _build_prompt(diff_text, commit_info_text, mode, rule_findings_text, rag_context)
     t0 = time.time()
+    model_name = os.getenv("LLM_MODEL", LLM_MODEL)
     response = client.chat.completions.create(
-        model=LLM_MODEL,
+        model=model_name,
         messages=[
             {"role": "system", "content": _SYSTEM},
             {"role": "user", "content": prompt},
@@ -100,7 +107,7 @@ def analyse(diff_text, commit_info_text, mode="A",
         result = json.loads(m.group(0)) if m else {}
     result["_mode"] = mode
     result["_elapsed_s"] = elapsed
-    result["_model"] = LLM_MODEL
+    result["_model"] = model_name
     return result
 
 

@@ -15,6 +15,12 @@ import sys
 import time
 from datetime import datetime
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 import git_utils
 import llm
 import rules.spring as spring_rules
