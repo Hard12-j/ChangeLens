@@ -38,7 +38,10 @@ Three analysis modes trade speed for depth:
 
 ## Screenshots
 
-> Run `streamlit run app.py`, analyze a commit, and add a screenshot here.
+<img width="1920" height="883" alt="image" src="https://github.com/user-attachments/assets/c40af4b1-0ad6-4ad2-8f77-da7ada1fb657" />
+
+<img width="1918" height="882" alt="image" src="https://github.com/user-attachments/assets/6b99ab42-e9d1-4641-8616-57cdbd56b6d4" />
+
 
 ---
 
@@ -140,17 +143,6 @@ changelens/
 
 ---
 
-## Limitations
-
-- **LLM "why" is always a guess.** The Why column is inferred by the LLM and labelled "(inferred)". It may be wrong.
-- **Cross-file breakage may be missed.** Analysis focuses on changed files. Mode C (RAG) partially mitigates this.
-- **Large diffs are truncated.** Diffs over ~12,000 characters are truncated. Very large refactors may produce incomplete summaries.
-- **Java only.** Rule detection only parses `.java` files. Kotlin, Groovy not yet supported.
-- **No correctness guarantee.** This tool assists; it does not replace human code review.
-- **Private GitHub repos not supported.** Clone locally first -- URL mode requires public repos.
-
----
-
 ## Future Work
 
 - **User login / auth** -- multi-user SaaS mode with saved history
@@ -160,9 +152,3 @@ changelens/
 - **VS Code extension** -- inline change-impact hover tooltips
 - **More LLM providers** -- Anthropic Claude, Google Gemini presets
 - **Historical trend view** -- track risk levels across many releases
-
----
-
-## License
-
-MIT
