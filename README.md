@@ -40,6 +40,7 @@ Three analysis modes trade speed for depth:
 
 <img width="1920" height="883" alt="image" src="https://github.com/user-attachments/assets/c40af4b1-0ad6-4ad2-8f77-da7ada1fb657" />
 
+
 <img width="1918" height="882" alt="image" src="https://github.com/user-attachments/assets/6b99ab42-e9d1-4641-8616-57cdbd56b6d4" />
 
 
